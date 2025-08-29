@@ -206,7 +206,7 @@ case_first_dispatch_device_data_success问题单问题记录
 2.对账阶段：互相交换要订阅哪些消息
  
 在用例中，sys节点把自己需要订阅哪些消息类型告诉了agent节点，agent会建立一些处理/发送这些消息的处理者/handler（这部分会有断言确定有没有），这时候agent到sys这个方向的通信确立
-但是用例中agent没有及时建立handler，导致sys节点到agent发送消息的链路没法确立
+但是用例中agent没有及时把自己要订阅什么消息类型告诉sys节点，导致无法建立对应的handler（故障中在这里断言失败），导致sys节点到agent发送消息的链路没法确立
  
 BAL里面有一套消息框架
 组件：对外呈现为一个进程，是节点的集合。
