@@ -1,0 +1,229 @@
+首月记录
+时间：2025.07.03~2025.08.03
+________________________________________
+day1
+主要是入职的一些东西，包括
+☐ 工位电脑的安装，网络权限的开通
+☐ 人脸采集，工卡
+☐ 熟悉环境和部门的同事
+________________________________________
+day2
+开始学习一些东西
+☐ 对于部门业务的认识，通过ilearning学习车载光部门三大产品（智能车灯，AR-HUD，光场屏）
+☐ 拉取了mentor的业务代码（AR-HUD）学习
+☐  
+☐  
+☐ 配环境
+ 
+________________________________________
+day3
+学习一些关于安卓开发的东西
+☐  https://developer.android.com/guide/components/activities/activity-lifecycle?hl=zh-cn
+☐ 
+1)   如何正确管理 Activity 的生命周期，安全高效地初始化和释放资源。
+2)   如何保存并恢复 UI 状态，保证配置变化或进程被杀后数据不丢失。
+3)   如何用生命周期感知组件让资源管理更自动化、模块化。
+4)   如何在 Activity 之间切换并返回数据，以及如何协调生命周期。
+5)   如何使用 Intent 实现 Activity 启动与数据传递。
+ 
+day4
+写周报
+总结了一下两个核心代码的调用情况：GoaApplication，GoaServiceManager
+ 
+设计模式学习：
+单例模式：一个类只允许创建一个对象（或者实例），那这个类就是一个单例类，这种设计模式就叫作单例设计模式，简称单例模式。
+使用单例模式的场景：
+1. 处理资源访问冲突（例如，写日志的时候调用logger对象，不同线程（对象）可能同时调用导致覆写），这时候通过私有化单例模式只允许创建一个对象，所有线程共享一个logger对象，共享一个FileWritter对象，而FileWritter对象是线程安全的因此避免覆写现象
+2. 表示全局唯一类（从业务概念上，如果有些数据在系统中只应保存一份，那就比较适合设计为单例类。比如，配置信息类。）
+ 
+实现一个单例需要关注的点：
+•	构造函数需要是private访问权限的，这样才能避免外部通过new创建实例；
+•	考虑对象创建时的线程安全问题；
+•	考虑是否支持延迟加载；
+•	考虑getInstance()性能是否高（是否加锁）。
+ 
+工厂模式：
+当创建逻辑比较复杂，是一个“大工程”的时候，我们就考虑使用工厂模式，封装对象的创建过程，将对象的创建和使用相分离。何为创建逻辑比较复杂呢？我总结了下面两种情况。
+•	第一种情况：类似规则配置解析的例子，代码中存在if-else分支判断，动态地根据不同的类型创建不同的对象。针对这种情况，我们就考虑使用工厂模式，将这一大坨if-else创建对象的代码抽离出来，放到工厂类中。
+•	还有一种情况，尽管我们不需要根据不同的类型创建不同的对象，但是，单个对象本身的创建过程比较复杂，比如前面提到的要组合其他类对象，做各种初始化操作。在这种情况下，我们也可以考虑使用工厂模式，将对象的创建过程封装到工厂类中。
+ 
+现在，我们上升一个思维层面来看工厂模式，它的作用无外乎下面这四个。这也是判断要不要使用工厂模式的最本质的参考标准。
+1.	封装变化：创建逻辑有可能变化，封装成工厂类之后，创建逻辑的变更对调用者透明。
+2.	代码复用：创建代码抽离到独立的工厂类之后可以复用。
+3.	隔离复杂性：封装复杂的创建逻辑，调用者无需了解如何创建对象。
+4.	控制复杂度：将创建代码抽离出来，让原本的函数或类职责更单一，代码更简洁。
+ 
+工厂模式与容器（dependency injection）：配置文件解析，以及根据配置文件通过“反射”语法来创建对象。其中，创建对象的过程就应用到了我们在学的工厂模式。对象创建、组装、管理完全由DI容器来负责，跟具体业务代码解耦，让程序员聚焦在业务代码的开发上。
+ 
+装饰器模式：装饰器模式主要解决继承关系过于复杂的问题，通过组合来替代继承。它主要的作用是给原始类添加增强功能。在设计的时候，装饰器类需要跟原始类继承相同的抽象类或者接口。
+ 
+day5
+学习编写测试用例 and 信息安全会议
+cd devm
+./scripts/build -p asan （编译）
+./scripts/llt -p asan --filter=*case_first_dispatch_device_data_success --repeat=10 （重复执行测试用例case_first_dispatch_device_data_success10次，filter是进行过滤，在测试套中只执行case_first_dispatch_device_data_success这个测试用例）
+ 
+devm/test/case/dpl/devm_dpl_test.h
+devm测试的框架：
+ 
+ 
+ 
+测试框架是基于Google 的开源 C++ 单元测试框架 GoogleTest，简称 gtest，它是一套用于编写 C/C++ 测试用例的框架，可以在多平台上运行。（https://wenote.huawei.com/wapp/pages/view/share/s/2Mzk5g0bXN7J2_CZ_r0qT-MA3_wRbg0Alh7J26oeZ-1QbVnM）
+ 
+gtest 提供了三种级别的事件：
+•	全局级别(测试程序级)：在所有用例执行前，以及所有用例执行完成后。（少用）
+•	TestSuite 级别(测试套级)：在测试套件的第一个用例前，最后一个用例执行后。
+•	TestCase 级别(用例级)：在每个用例执行前后。
+ 
+ 
+ 
+TestSuite 也就是所说的测试套，我们需要写一个类，继承 testing::Test，并实现 SetUpTestCase 和 TearDownTestCase 方法。注意，这两个方法是静态的。
+•	SetUpTestCase 方法在第一个用例执行前执行。
+•	TearDownTestCase 方法在最后一个用例执行后执行。
+ 
+TestCase 事件是挂在每个案例执行前后的，实现方式和上面的几乎一样，不过需要实现的是 SetUp 方法和 TearDown 方法：
+•	SetUp() 方法在每个TestCase之前执行。
+•	TearDown() 方法在每个TestCase之后执行。
+ 
+断言：
+gtest 提供两种断言：
+•	ASSERT_*(致命断言)：这类断言失败后会产生致命失败，并结束当前函数。
+•	EXPECT_*(非致命断言)：这类断言失败后产生非致命失败，不会结束当前函数。
+ 
+学习了case_agent_query_dsitortion_switch_success测试用例的代码和运行流程，以及出错时怎样定位错误点
+ 
+day6
+测试自动化脚本
+1.	修改goa_llt_obl.sh脚本，配置ci仓跑super mr
+2.	创建llt_log文件夹，和goa_llt_obl.sh内部填写的目录保持一致
+3.	把所有脚本放在llt_log文件夹下，按需配置mr_folders和llt_folders，他俩的区别就是mr_folers比llt_folders多一个ci仓，其余保持一致，执行命令python run_llt.py
+跑是跑起来了，但是很多操作都不知道是要干嘛
+通过自动化脚本进行测试用例的批量调试，并记录测试日志，目前出现了一个构建脚本的错误
+ 
+day21
+测试用例
+day6中出现的问题可以通过注释goa_llt_obl.sh中的# set -e来避免错误中断
+ 
+昨天重新创建了一个实例：创建实例，传入私钥（没有.pub后缀的是私钥），
+拉起代码的流程
+mkdir code0703
+cd code0703
+git mm init -u https://codehub-dg-y.huawei.com/GOA/manifest.git -b master -g guard -m pdt/dependency.xml
+git mm sync
+cd pdt
+git mm start local_branch
+./scripts/clone
+ 
+在day6中记得在gitignore中加入*.xml
+ 
+-⭐- 在本地跑完记得把日志文件删掉，避免冲突
+ 
+在脚本中加入了一段，在出现错误时，直接把四个模块的整个日志文件复制到failure_result的文件夹中，加入时间戳防止覆盖
+ 
+跑出了三个错误情况，但是没有错误信息，在测试用例中加入打印来定位问题点
+ 
+day27
+测试用例case_pgu_bri_gear的问题点解决
+以下通过用例的执行流程来分析定位问题点：
+TEST_F(DplTest, case_pgu_bri_gear)
+{
+    BTF_FUNC_PATCH(Bdm::SetBriGear, SetBriGearStub);
+    constexpr uint32_t testGear = 6U;
+
+    // (1)
+    StartLocalNode();
+    StartRemoteNode(Resource::DEVICE_TYPE_MAX_LIGHT, Resource::BDTYPE_XLIGHT_CHANGAN_C857_LDM,
+        Resource::PHY_BDTYPE_XLIGHT_CHANGAN_C857_LDM);
+    std::cout << "Step 1: StartRemoteNode completed" << std::endl;
+    ASSERT_TRUE(AddLdm());
+    AddPgu();
+    std::cout << "Step 1: AddPgu() completed" << std::endl;
+    auto* bdm = Bsl::QueryModuleByType<Bdm::BdmModule>(MockNodeDnid(), Bdm::BDM_MODULE_TYPE);
+    ASSERT_NE(bdm, nullptr);
+    // 触发单板子系统就绪
+    bdm->BdInst().HandleBoardStatus(Bdm::BoardStatus::BOARD_READY);
+    std::cout << "Step 1: HandleBoardStatus completed" << std::endl;
+
+    // (2)
+    g_setBriGear.store(0);//先将g_setBriGear置零
+    auto* dcMPtr = Bsl::QueryModuleByType<DevmBase::Dc::DevmDc>(MockNodeDnid(), DevmBase::Dc::DEVM_DC_TYPE);
+    std::cout << "Step 2: QueryModuleByType completed, dcMPtr: " << dcMPtr << std::endl;
+    EXPECT_NE(dcMPtr, nullptr);
+    TreeDc::Producer dcProducer(dcMPtr->DcWrapper(), 0x00U);
+    ASSERT_TRUE(dcProducer.Visit(pguObjId_, [testGear](auto& node) {
+        auto* pguNode = dynamic_cast<TreeDc::Node::Devm::Pgu*>(&node);
+        std::cout << "Step 2: Visit pguObjId_ completed, pguNode: " << pguNode << std::endl;
+        EXPECT_NE(pguNode, nullptr);
+        pguNode->SetGear(testGear);
+        std::cout << "Step 2: SetGear completed" << std::endl;
+    }));
+    // (3)
+    BTF_EXPECT_TRUE_TIMEOUT_1MIN(g_setBriGear == 1U);
+    std::cout << "Step 3: BTF_EXPECT_TRUE_TIMEOUT_1MIN completed, g_setBriGear: " << g_setBriGear << std::endl;
+}
+最开始打印信息停在std::cout << "Step 2: SetGear completed" << std::endl;但没有报g_setBriGear == 1的判断超时，也就是说并不是g_setBriGear的值有问题，那么进到业务代码中去看什么时候调用SetBriGear，往前是UpdateBriGear，在这里面又定位到NotifyAutoBrightnessLevel(this->Addr().dnid, level);，进入到这个定义里面是bdm模块的亮度档位设置，有自动亮度模块来注册和订阅这个自动亮度挡位。
+ 
+那么回到原测试用例代码：
+ 
+ 
+ 
+在开始时会拉起本地（dnid=2）和远端节点（dnid=5），挂接上ldm和pgu节点，然后触发单板状态和dc修改光机档位，后面要拉起pguNode，然后调用SetGear，那么在业务代码中会调用UpdateBriGear进行值的更新，在这里面会进行NotifyAutoBrightnessLevel通知bdm的bdm_brightness_gear_observer.cpp观察者，bdm_brightness_gear_observer会通知auto_brightness_module.cpp进行亮度值的设置(setLevel())，问题停在了setLevel执行时的stop()中的Bal::Deployment::Timer(ModuleAddr()).Cancel(timerHandle_);删除定时器的操作
+ 
+目前通过定时器溯源到code0723/bdl/code/source/schedule/bdl_schedule_workshop.cpp中，可能是执行SyncRunWork方法的f.wait()停住，加入了打印信息来确定
+ 
+后面发现是在setLevel中要赋值前要加锁保护，但是在stop()中进行定时器的取消时又会回调start中的timerHandle_尝试获取锁。那么在多个线程中，如果线程A在执行timer的取消时要获取锁，这时候如果有线程竞争到锁会导致线程A停在这里。
+ 
+拉了红亮哥重新讨论了一下逻辑：问题是在setLevel方法中尝试获取锁，但在回调Every中也会尝试获取这把锁，那么如果刚好在多线程中，线程A要执行定时器的取消时尝试获取锁执行timer的取消，如果同一时间有线程B进行start竞争到锁在container中加入timer会导致cancel和start执行失败，start一直回调回every中拿着锁导致cancel拿不到锁一直阻塞在这
+修改：将setLevel中的加锁放到if (Start())中。  （见Wiki: 安全编码问题排查案例 —— 加锁不规范 (huawei.com）第二个案例）
+ 
+ 
+day0805
+安卓开发问题记录
+1. 构建项目时出现unable to find valid certification path to requested target，但是maven中央仓库访问没问题
+解决方法：我用的是android studio自带的jdk，但是这个jdk没有加入安全证书，加入安全证书后可以正常运行（Wiki: 安卓开发环境配置 (huawei.com)）
+2. 遇到问题现象：android studio构建时一直lanching app
+解决办法：原因是开了代理使得模拟器的adb出现了问题，解决方法是将模拟器的数据重置（https://stackoverflow.com/questions/71013971/android-studio-stuck-on-loading-devices 、https://blog.csdn.net/xzzteach/article/details/140846998）
+ 
+day0807
+安卓开发问题记录
+app中存在的问题记录：1. 播放时点击暂停无法暂停 2. 点击播放后播放键很久才变成暂停键 3.车机上读取不到视频文件
+ 
+day0811
+问题单问题记录
+换到另一个git分支：
+1. git fetch 
+2. git checkout 到分支
+3. git switch 分支 ，然后git checkout到分支
+ 
+解决提错单，前后不一致的问题：
+1.git reset --soft HEAD^^^
+2.git commit -m "【合入描述】【问题单号or需求单号】"
+3.git mr
+ 
+day0829
+case_first_dispatch_device_data_success问题单问题记录
+1.两个模块互相订阅前需要通过UDP进行互相发现节点的过程
+2.对账阶段：互相交换要订阅哪些消息
+ 
+在用例中，sys节点把自己需要订阅哪些消息类型告诉了agent节点，agent会建立一些处理/发送这些消息的处理者/handler（这部分会有断言确定有没有），这时候agent到sys这个方向的通信确立
+但是用例中agent没有及时建立handler，导致sys节点到agent发送消息的链路没法确立
+ 
+BAL里面有一套消息框架
+组件：对外呈现为一个进程，是节点的集合。
+模块：是框架最小的资源管理单位，是一个独立的功能单位
+节点：对模块的统一封装并管理，是模块的集合。
+注 ： 节点 和模块都是可以被任意部署在不同组件或者节点的。
+ 
+接收消息的模块首先需要向框架订阅自己要收到的哪些消息
+ 
+通过 Annoucement 机制（一种解耦的通信机制）
+在 Bal 框架中，有如下几个关于模块间通信的重要概念：
+1.	通信基于一类叫做 Item 的结构体，这个结构体描述了唯一的一种消息类型；
+2.	通信中，发送方不知道谁接收了消息，消息的接收方也不感知消息的发送者；
+3.	通信功能对收发双方的位置（是否在同一个节点、同一进程）没有要求；
+场景假设：如有某个 Item i 定义了一类消息；此后，模块A说明它要接收 i 这类消息，模块B通过发送消息时候指定i，那么模块A能收到所有关于 i 的消息，包括B发出的（但是A并不知道这条消息来自B、或者其他地方，B也不知道A接受了它发送的消息）。
+每个模块，只需要关注自己会发送什么消息以及自己需要响应什么消息即可。
+参考：
+ 
+ 
+ 
